@@ -41,6 +41,7 @@ class FleureCard extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.all(12),
       elevation: 5,
       child: InkWell(
         onTap:() {
