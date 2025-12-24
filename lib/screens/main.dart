@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/services/planteService.dart';
+import '../services/db.dart';
 import 'herbier.dart';
 import 'carte.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialisation de la base de données au premier lancement
+  await DatabaseService.database;
+
   runApp(const MyApp());
 }
 
@@ -44,17 +52,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final PlanteService planteService = PlanteService(); //instance du service
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Future<void> _addTest() async{
+      var plante = Plante(name: 'Plantoune1', text: "La première des plantoune", longitude: 1.0);
+      await planteService.insertPlante(plante);
   }
   int currentPageIndex = 0;
 
@@ -103,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ]
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _addTest,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
