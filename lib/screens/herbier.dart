@@ -8,7 +8,12 @@ class HerbierPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    if(plantes.isEmpty){
+      return const Center(
+        child: Image(image: AssetImage('assets/home.png')),
+      );
+    }else{
+      return ListView.builder(
         itemCount: plantes.length,
         itemBuilder: (context, index){
           final plante = plantes[index];
@@ -16,6 +21,7 @@ class HerbierPage extends StatelessWidget {
             title: Text(plante.name),
           );
         },
-    );
+      );
+    }
   }
 }

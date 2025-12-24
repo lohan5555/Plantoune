@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:plantoune/models/plante.dart';
 import 'package:plantoune/services/planteService.dart';
 import '../services/db.dart';
@@ -10,6 +11,13 @@ void main() async {
 
   // Initialisation de la base de données au premier lancement
   await DatabaseService.database;
+
+  //Couleur de la barre système
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark.copyWith(
+      systemNavigationBarColor: Color(0xffecefe5),
+    ),
+  );
 
   runApp(const MyApp());
 }
@@ -25,6 +33,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Plantoune',
       theme: ThemeData(
+        scaffoldBackgroundColor: Color(0xffffffff),
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffd5f2c9)),
         useMaterial3: true,
       ),
