@@ -1,12 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:plantoune/models/plante.dart';
 
 class HerbierPage extends StatelessWidget {
   final List<Plante> plantes;
+  final Function(int) onDelete;
 
-  const HerbierPage({super.key, required this.plantes});
+  const HerbierPage({
+    super.key,
+    required this.plantes,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +21,9 @@ class HerbierPage extends StatelessWidget {
       return ListView.builder(
         itemCount: plantes.length,
         itemBuilder: (context, index){
-          final plante = plantes[index];
-          return ListTile(
-            title: FleureCard(plante: plante),
+          return FleureCard(
+            plante: plantes[index],
+            onDelete: () => onDelete(plantes[index].id!)
           );
         },
       );
@@ -31,8 +34,9 @@ class HerbierPage extends StatelessWidget {
 //Card d'affichage d'une plante
 class FleureCard extends StatelessWidget{
   final Plante plante;
+  final VoidCallback onDelete;
 
-  const FleureCard({super.key, required this.plante});
+  const FleureCard({super.key, required this.plante, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +93,7 @@ class FleureCard extends StatelessWidget{
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              //TODO
-                              print("test supp");
+                              onDelete();
                             },
                           )
                         ],
