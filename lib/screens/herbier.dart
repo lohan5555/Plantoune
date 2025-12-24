@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:plantoune/models/plante.dart';
 
@@ -18,10 +20,90 @@ class HerbierPage extends StatelessWidget {
         itemBuilder: (context, index){
           final plante = plantes[index];
           return ListTile(
-            title: Text(plante.name),
+            title: FleureCard(plante: plante),
           );
         },
       );
     }
   }
+}
+
+//Card d'affichage d'une plante
+class FleureCard extends StatelessWidget{
+  final Plante plante;
+
+  const FleureCard({super.key, required this.plante});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: InkWell(
+        onTap:() {
+          //TODO
+          print("redirection vers DetailPlante");
+        },
+        child: SizedBox(
+          height: 150,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: plante.imagePath != null
+                    ?Image.asset(
+                  'assets/default.png',
+                  fit: BoxFit.cover,
+                )
+                    :Image.asset(
+                  'assets/default.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        plante.name,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text(
+                        plante.text ?? 'Aucune description',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              //TODO
+                              print("test edit");
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              //TODO
+                              print("test supp");
+                            },
+                          )
+                        ],
+                      )
+                    ]
+                  )
+                )
+              ),
+            ],
+          )
+        ),
+      )
+    );
+  }
+
 }
