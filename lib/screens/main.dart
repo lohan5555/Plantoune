@@ -121,8 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
         selectedIndex: currentPageIndex,
         destinations: [
           NavigationDestination(
-            icon: Icon(Icons.book_rounded),
-            selectedIcon: Icon(Icons.menu_book),
+            selectedIcon: Icon(Icons.local_florist),
+            icon: Icon(Icons.local_florist_outlined),
             label: 'Herbier'),
           NavigationDestination(
             icon: Icon(Icons.map_outlined),
