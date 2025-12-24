@@ -53,10 +53,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final PlanteService planteService = PlanteService(); //instance du service
+  List<Plante> _plantes = [];
+
+  @override
+  void initState(){
+    super.initState();
+    _loadPlantes();
+  }
+
+  //fonction qui va récupérer la liste des plantes et mettre à jour le state
+  Future<void> _loadPlantes() async{
+    final plantes = await planteService.getAllplantes();
+    //setState va rebuild le widget
+    setState(() {
+      _plantes = plantes;
+    });
+  }
 
   Future<void> _addTest() async{
-      var plante = Plante(name: 'Plantoune1', text: "La première des plantoune", longitude: 1.0);
+      var plante = Plante(name: 'PlantounePasLe1', text: "D'autre plantoune", longitude: 1.0);
       await planteService.insertPlante(plante);
+      await _loadPlantes(); //toujours recharger le state quand on modifie la liste
   }
   int currentPageIndex = 0;
 
@@ -81,8 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: IndexedStack(
         index: currentPageIndex,
-        children: const [
-          HerbierPage(),
+        children: [
+          HerbierPage(plantes: _plantes),
           CartePage(),
         ],
       ),

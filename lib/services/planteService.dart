@@ -46,12 +46,12 @@ class PlanteService{
       for (final {
         'id': id as int,
         'name': name as String,
-        'text': text as String,
-        'latitude': latitude as num,
-        'longitude': longitude as num,
-        'imagePath': imagePath as String}
+        'text': text as String?,
+        'latitude': latitude as num?,
+        'longitude': longitude as num?,
+        'imagePath': imagePath as String?}
       in planteMaps)
-        Plante(id: id, name: name, text: text, latitude: latitude.toDouble(), longitude: longitude.toDouble(), imagePath: imagePath),
+        Plante(id: id, name: name, text: text, latitude: latitude?.toDouble(), longitude: longitude?.toDouble(), imagePath: imagePath),
     ];
   }
 
