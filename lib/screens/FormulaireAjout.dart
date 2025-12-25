@@ -46,106 +46,106 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
         foregroundColor: Colors.black,
       ),
       body: SafeArea(
-          child:SingleChildScrollView(
-            child: Builder(
-              builder: (BuildContext context) {
-                return Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 24),
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Nom :"),
-                              TextFormField(
-                                controller: nameController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Veuillez entrer un nom';
-                                  }
-                                  return null;
+        child:SingleChildScrollView(
+          child: Builder(
+            builder: (BuildContext context) {
+              return Padding(
+                padding: const EdgeInsets.all(20),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 24),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Nom :"),
+                            TextFormField(
+                              controller: nameController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Veuillez entrer un nom';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            Text("Description :"),
+                            TextFormField(
+                              controller: textController,
+                              validator: (value) {return null;},
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: ElevatedButton(
+                                onPressed: loadingCoordonnees
+                                  ? null
+                                  : () async {
+                                  if (!_formKey.currentState!.validate()) return;
+
+                                  setState(() {
+                                    loadingCoordonnees = true;
+                                  });
+
+                                  final position = await _getCurrentPosition();
+
+                                  final plante = Plante(
+                                    name: nameController.text,
+                                    text: textController.text,
+                                    imagePath: galleryFile?.path,
+                                    latitude: position?.latitude,
+                                    longitude: position?.longitude,
+                                  );
+
+                                  widget.onCreate(plante);
+                                  Navigator.pop(context);
+
+                                  setState(() {
+                                    loadingCoordonnees = false;
+                                  });
                                 },
+                                child: loadingCoordonnees
+                                    ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                                    : const Text('Créer'),
                               ),
-                              SizedBox(height: 20),
-                              Text("Description :"),
-                              TextFormField(
-                                controller: textController,
-                                validator: (value) {return null;},
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                child: ElevatedButton(
-                                  onPressed: loadingCoordonnees
-                                      ? null
-                                      : () async {
-                                    if (!_formKey.currentState!.validate()) return;
-
-                                    setState(() {
-                                      loadingCoordonnees = true;
-                                    });
-
-                                    final position = await _getCurrentPosition();
-
-                                    final plante = Plante(
-                                      name: nameController.text,
-                                      text: textController.text,
-                                      imagePath: galleryFile?.path,
-                                      latitude: position?.latitude,
-                                      longitude: position?.longitude,
-                                    );
-
-                                    widget.onCreate(plante);
-                                    Navigator.pop(context);
-
-                                    setState(() {
-                                      loadingCoordonnees = false;
-                                    });
-                                  },
-                                  child: loadingCoordonnees
-                                      ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                      : const Text('Créer'),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 24),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xffd5f2c9),
-                              foregroundColor: Colors.black),
-                          child: const Text('Ajouter une image'),
-                          onPressed: () {
-                            _showPicker(context: context);
-                          },
-                        ),
-                        SizedBox(
-                          height: 200.0,
-                          width: 300.0,
-                          child: galleryFile == null
-                              ? const Center(child: Text("Vous n'avez pas encore selectionné d'image."))
-                              : Center(child: Image.file(galleryFile!)),
-                        ),
-                        SizedBox(height: 24),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 24),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xffd5f2c9),
+                          foregroundColor: Colors.black),
+                        child: const Text('Ajouter une image'),
+                        onPressed: () {
+                          _showPicker(context: context);
+                        },
+                      ),
+                      SizedBox(
+                        height: 200.0,
+                        width: 300.0,
+                        child: galleryFile == null
+                          ? const Center(child: Text("Vous n'avez pas encore selectionné d'image."))
+                          : Center(child: Image.file(galleryFile!)),
+                      ),
+                      SizedBox(height: 24),
+                    ],
                   ),
-                );
-              },
-            ),
-          )
+                ),
+              );
+            },
+          ),
+        )
       )
     );
   }
