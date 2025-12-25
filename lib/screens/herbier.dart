@@ -95,12 +95,25 @@ class FleureCard extends StatelessWidget{
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              onDelete();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Plante supprimé')),
-                              );
-                            },
+                            onPressed: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Attention'),
+                                content: const Text('Êtes-vous sur de vouloir supprimer cette plante ? Cette action est définitive.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                                    child: const Text('Annuler'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => {
+                                      Navigator.pop(context, 'OK'),
+                                      onDelete()
+                                    },
+                                    child: const Text('OK')),
+                                ],
+                              ),
+                            ),
                           )
                         ],
                       )

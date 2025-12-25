@@ -74,6 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _deletePlante(int id) async {
     await planteService.deletePlante(id);
     await _loadPlantes();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Plante supprimé')),
+    );
   }
 
 
