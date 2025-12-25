@@ -19,13 +19,13 @@ void main() async {
     ),
   );
 
+  //on lance le widget racine
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   // Configuration globale
   @override
   Widget build(BuildContext context) {
@@ -37,15 +37,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffd5f2c9)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -54,6 +52,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final PlanteService planteService = PlanteService(); //instance du service
   List<Plante> _plantes = [];
+  int currentPageIndex = 0;
 
   @override
   void initState(){
@@ -81,7 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
     await _loadPlantes();
   }
 
-  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
