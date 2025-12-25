@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:plantoune/models/plante.dart';
-
+import 'package:geolocator/geolocator.dart';
 
 
 class FormulaireAjout extends StatefulWidget {
@@ -79,16 +79,20 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      final plante = Plante(
-                                          name: nameController.text,
-                                          text: textController.text,
-                                          imagePath: galleryFile?.path
-                                      );
-                                      widget.onCreate(plante);
+                                    if (!_formKey.currentState!.validate()) return;
 
-                                      Navigator.pop(context);
-                                    }
+                                    final position = await _getCurrentPosition();
+
+                                    final plante = Plante(
+                                      name: nameController.text,
+                                      text: textController.text,
+                                      imagePath: galleryFile?.path,
+                                      latitude: position?.latitude,
+                                      longitude: position?.longitude,
+                                    );
+
+                                    widget.onCreate(plante);
+                                    Navigator.pop(context);
                                   },
                                   child: const Text('Créer'),
                                 ),
@@ -185,5 +189,44 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
       galleryFile = savedImage;
     });
   }
+
+
+  Future<Position?> _getCurrentPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Le GPS est désactivé')),
+      );
+      return null;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Permission GPS refusée')),
+        );
+        return null;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Permission GPS refusée définitivement'),
+        ),
+      );
+      return null;
+    }
+
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+  }
+
 
 }
