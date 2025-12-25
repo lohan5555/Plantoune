@@ -43,82 +43,86 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
         backgroundColor: Color(0xffd5f2c9),
         foregroundColor: Colors.black,
       ),
-      body: Builder(
-          builder: (BuildContext context) {
-            return Padding(
-              padding: const EdgeInsets.all(20),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Spacer(),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Nom :"),
-                          TextFormField(
-                            controller: nameController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Veuillez entrer un nom';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 20),
-                          Text("Description :"),
-                          TextFormField(
-                            controller: textController,
-                            validator: (value) {return null;},
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  final plante = Plante(
-                                      name: nameController.text,
-                                      text: textController.text,
-                                      imagePath: galleryFile?.path
-                                  );
-                                  widget.onCreate(plante);
+      body: SafeArea(
+          child:SingleChildScrollView(
+            child: Builder(
+              builder: (BuildContext context) {
+                return Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 24),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Nom :"),
+                              TextFormField(
+                                controller: nameController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Veuillez entrer un nom';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: 20),
+                              Text("Description :"),
+                              TextFormField(
+                                controller: textController,
+                                validator: (value) {return null;},
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      final plante = Plante(
+                                          name: nameController.text,
+                                          text: textController.text,
+                                          imagePath: galleryFile?.path
+                                      );
+                                      widget.onCreate(plante);
 
-                                  Navigator.pop(context);
-                                }
-                              },
-                              child: const Text('Créer'),
-                            ),
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: const Text('Créer'),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 24),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xffd5f2c9),
+                              foregroundColor: Colors.black),
+                          child: const Text('Ajouter une image'),
+                          onPressed: () {
+                            _showPicker(context: context);
+                          },
+                        ),
+                        SizedBox(
+                          height: 200.0,
+                          width: 300.0,
+                          child: galleryFile == null
+                              ? const Center(child: Text("Vous n'avez pas encore selectionné d'image."))
+                              : Center(child: Image.file(galleryFile!)),
+                        ),
+                        SizedBox(height: 24),
+                      ],
                     ),
-                    Spacer(),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xffd5f2c9),
-                          foregroundColor: Colors.black),
-                      child: const Text('Ajouter une image'),
-                      onPressed: () {
-                        _showPicker(context: context);
-                      },
-                    ),
-                    SizedBox(
-                      height: 200.0,
-                      width: 300.0,
-                      child: galleryFile == null
-                          ? const Center(child: Text("Vous n'avez pas encore selectionné d'image."))
-                          : Center(child: Image.file(galleryFile!)),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      );
+                  ),
+                );
+              },
+            ),
+          )
+      )
+    );
   }
 
   //permet de sauvegarder une image dans l'appareil
