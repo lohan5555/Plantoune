@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:plantoune/models/plante.dart';
 
@@ -55,14 +57,14 @@ class FleureCard extends StatelessWidget{
               Expanded(
                 flex: 3,
                 child: plante.imagePath != null
-                    ?Image.asset(
-                  'assets/default.png',
-                  fit: BoxFit.cover,
-                )
-                    :Image.asset(
-                  'assets/default.png',
-                  fit: BoxFit.cover,
-                ),
+                  ?Image.file(
+                    File(plante.imagePath!),
+                    fit: BoxFit.cover,
+                  )
+                  :Image.asset(
+                    'assets/default.png',
+                    fit: BoxFit.cover,
+                  ),
               ),
               Expanded(
                 flex: 3,

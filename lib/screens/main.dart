@@ -5,6 +5,7 @@ import 'package:plantoune/services/planteService.dart';
 import '../services/db.dart';
 import 'herbier.dart';
 import 'carte.dart';
+import 'FormulaireAjout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,11 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<void> _addTest() async{
-      var plante = Plante(name: 'PlantounePasLe1', text: "D'autre plantoune", longitude: 1.0);
-      await planteService.insertPlante(plante);
-      await _loadPlantes(); //toujours recharger le state quand on modifie la liste
-  }
 
   Future<void> _deletePlante(int id) async {
     await planteService.deletePlante(id);
@@ -115,7 +111,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ]
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addTest,
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => FormulaireAjout(
+                onCreate: (plante) async {
+                  await planteService.insertPlante(plante);
+                  await _loadPlantes();
+                },
+              ),
+            ),
+          );
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
