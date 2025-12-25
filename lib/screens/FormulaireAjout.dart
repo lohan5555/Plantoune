@@ -26,6 +26,8 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
   final nameController = TextEditingController();
   final textController = TextEditingController();
 
+  var loadingCoordonnees = false;
+
   @override
   void dispose() {
     nameController.dispose();
@@ -78,8 +80,14 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                                 child: ElevatedButton(
-                                  onPressed: () async {
+                                  onPressed: loadingCoordonnees
+                                      ? null
+                                      : () async {
                                     if (!_formKey.currentState!.validate()) return;
+
+                                    setState(() {
+                                      loadingCoordonnees = true;
+                                    });
 
                                     final position = await _getCurrentPosition();
 
@@ -93,8 +101,21 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
 
                                     widget.onCreate(plante);
                                     Navigator.pop(context);
+
+                                    setState(() {
+                                      loadingCoordonnees = false;
+                                    });
                                   },
-                                  child: const Text('Créer'),
+                                  child: loadingCoordonnees
+                                      ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                      : const Text('Créer'),
                                 ),
                               ),
                             ],
