@@ -95,6 +95,9 @@ class FleureCard extends StatelessWidget{
                             icon: const Icon(Icons.delete),
                             onPressed: () {
                               onDelete();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Plante supprimé')),
+                              );
                             },
                           )
                         ],
