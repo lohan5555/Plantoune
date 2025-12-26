@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/screens/detailPlante.dart';
 
 class HerbierPage extends StatelessWidget {
   final List<Plante> plantes;
@@ -47,8 +48,12 @@ class FleureCard extends StatelessWidget{
       elevation: 5,
       child: InkWell(
         onTap:() {
-          //TODO
-          print("redirection vers DetailPlante");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => DetailPlante(plante: plante),
+            ),
+          );
         },
         child: SizedBox(
           height: 150,

@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:path/path.dart';
 
 import '../models/plante.dart';
+import 'detailPlante.dart';
 
 class CartePage extends StatelessWidget {
   const CartePage({super.key, required this.plantes});
@@ -13,7 +15,7 @@ class CartePage extends StatelessWidget {
   final List<Plante> plantes;
 
   //créer une liste de marker à partir de la liste des plantes
-  List<Marker> listMarker(List<Plante> plantes){
+  List<Marker> listMarker(List<Plante> plantes, BuildContext context){
     List<Marker> list = [];
     for (var plante in plantes) {
       if(plante.latitude != null && plante.longitude != null){
@@ -23,8 +25,12 @@ class CartePage extends StatelessWidget {
           height: 100,
           child: GestureDetector(
             onTap: (){
-              //TODO
-              print("redirection vers DetailPlante");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DetailPlante(plante: plante),
+                ),
+              );
             },
             child: planteMarker(imagePath: plante.imagePath ?? 'assets/default.png'),
           )
@@ -58,7 +64,7 @@ class CartePage extends StatelessWidget {
                 ],
               ),
               MarkerLayer(
-                markers: listMarker(plantes),
+                markers: listMarker(plantes, context),
               ),
             ],
           )
