@@ -46,6 +46,10 @@ dependencies:
   #géolocalisation
   geolocator: ^13.0.4
 
+  #carte
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
