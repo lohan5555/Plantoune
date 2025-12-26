@@ -27,6 +27,16 @@ class CartePage extends StatelessWidget {
                   TextSourceAttribution('© OpenStreetMap contributors'),
                 ],
               ),
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    point: LatLng(45.566669, 5.93333),
+                    width: 50,
+                    height: 50,
+                    child: Image(image: AssetImage("assets/marker.png")),
+                  ),
+                ],
+              ),
             ],
           )
 
