@@ -21,7 +21,13 @@ class CartePage extends StatelessWidget {
           point: LatLng(plante.latitude!, plante.longitude!),
           width: 100,
           height: 100,
-          child: planteMarker(imagePath: plante.imagePath ?? 'assets/default.png'),
+          child: GestureDetector(
+            onTap: (){
+              //TODO
+              print("redirection vers DetailPlante");
+            },
+            child: planteMarker(imagePath: plante.imagePath ?? 'assets/default.png'),
+          )
         ));
       }
     }
