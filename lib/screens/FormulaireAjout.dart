@@ -93,7 +93,9 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
 
                                   final plante = Plante(
                                     name: nameController.text,
-                                    text: textController.text,
+                                    text: textController.text.trim().isEmpty
+                                        ? null
+                                        : textController.text.trim(), //pour mettre 'NULL' au lieu d'une chaine vide
                                     imagePath: galleryFile?.path,
                                     latitude: position?.latitude,
                                     longitude: position?.longitude,
