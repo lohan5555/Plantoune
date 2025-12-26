@@ -1,16 +1,42 @@
-# plantoune
+# Plantoune
 
-A new Flutter project.
+Plantoune est une application mobile Flutter permettant de réaliser un herbier numérique à partir de photos de plantes. Chaque entrée dans l’herbier est associée à des coordonnées géographiques, qu’il est possible de visualiser sur une carte.
+L'objectif en développant cette application était de m'exercer et me re-familiariser avec l'environnement Flutter, que je n'avais pas pratiqué depuis un moment.
 
-## Getting Started
+## Installation : 
 
-This project is a starting point for a Flutter application.
+- Clonez le dépôt :
 
-A few resources to get you started if this is your first Flutter project:
+git clone https://github.com/lohan5555/Plantoune
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Ouvrez le projet dans Android Studio
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Compilez et lancez sur un émulateur ou un appareil Android
+
+
+## Fonctionnalités : 
+
+- Créer une entrée dans l’herbier : prendre une photo (avec l'appareil photo ou depuis la galerie), renseigner des informations (un nom et une description) et y associer les coordonnées de l’appareil 
+
+- Afficher toutes les plantes renseignées
+
+- Modifier ou supprimer les plantes de l'herbier
+
+- Visualiser sur une carte toutes les entrées de l’herbier 
+
+
+## Technologie utilisées :
+
+- Flutter_map pour la carte interactif (https://pub.dev/packages/flutter_map)
+- Sqflite pour la persistance des données (https://pub.dev/packages/sqflite)
+- Image_picker pour prendre/récupérer les photos (https://pub.dev/packages/image_picker)
+- Geolocator pour les coordonnées géographiques (https://pub.dev/packages/geolocator)
+
+
+## Potentiels améliorations :
+
+- Ajouter plusieurs photos à une seule plante
+- Ajouter des filtres et une barre de recherche dans l'herbier
+
+
+## Images :
