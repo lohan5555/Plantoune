@@ -17,6 +17,25 @@ class Plante {
       }
   );
 
+  //modele de copy pour une modification propre
+  Plante copyWith({
+    String? name,
+    String? text,
+    String? imagePath,
+    double? latitude,
+    double? longitude,
+  }) {
+    return Plante(
+      id: id,
+      name: name ?? this.name,
+      text: text ?? this.text,
+      imagePath: imagePath ?? this.imagePath,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+    );
+  }
+
+
   Map<String, Object?> toMap() {
     return {
       'id': id,

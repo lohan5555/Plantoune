@@ -3,15 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:plantoune/models/plante.dart';
 import 'package:plantoune/screens/detailPlante.dart';
+import 'package:plantoune/screens/formulaireEdit.dart';
 
 class HerbierPage extends StatelessWidget {
   final List<Plante> plantes;
-  final Function(int) onDelete;
+  final void Function(int) onDelete;
+  final void Function(Plante) onEdit;
 
   const HerbierPage({
     super.key,
     required this.plantes,
     required this.onDelete,
+    required this.onEdit
   });
 
   @override
@@ -26,7 +29,8 @@ class HerbierPage extends StatelessWidget {
         itemBuilder: (context, index){
           return FleureCard(
             plante: plantes[index],
-            onDelete: () => onDelete(plantes[index].id!)
+            onDelete: () => onDelete(plantes[index].id!),
+            onEdit: onEdit
           );
         },
       );
@@ -38,8 +42,10 @@ class HerbierPage extends StatelessWidget {
 class FleureCard extends StatelessWidget{
   final Plante plante;
   final VoidCallback onDelete;
+  final void Function(Plante) onEdit;
 
-  const FleureCard({super.key, required this.plante, required this.onDelete});
+
+  const FleureCard({super.key, required this.plante, required this.onDelete, required this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +99,17 @@ class FleureCard extends StatelessWidget{
                         children: [
                           IconButton(
                             icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              //TODO
-                              print("test edit");
+                            onPressed: () async {
+                              final planteModifiee = await Navigator.push<Plante>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => FormulaireEdit(plante: plante),
+                                ),
+                              );
+
+                              if (planteModifiee != null) {
+                                onEdit(planteModifiee);
+                              }
                             },
                           ),
                           IconButton(

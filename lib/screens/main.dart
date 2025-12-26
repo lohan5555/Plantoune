@@ -79,6 +79,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Future<void> _editPlante(Plante plante) async {
+    await planteService.updatePlante(plante);
+    await _loadPlantes();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Plante modifiée')),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: IndexedStack(
         index: currentPageIndex,
         children: [
-          HerbierPage(plantes: _plantes, onDelete: _deletePlante,),
+          HerbierPage(plantes: _plantes, onDelete: _deletePlante, onEdit: _editPlante,),
           CartePage(plantes: _plantes),
         ],
       ),
