@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:plantoune/models/plante.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:plantoune/services/positionService.dart';
 
 
 class FormulaireEdit extends StatefulWidget {
@@ -27,6 +27,8 @@ class _FormulaireEditState extends State<FormulaireEdit> {
   final textController = TextEditingController();
 
   var loadingCoordonnees = false;
+
+  final PositionService positionService = PositionService();
 
   @override
   void dispose() {
@@ -102,7 +104,12 @@ class _FormulaireEditState extends State<FormulaireEdit> {
                                     loadingCoordonnees = true;
                                   });
 
-                                  final position = await _getCurrentPosition();
+                                  final position = await positionService.getCurrentPosition();
+                                  if (position == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Impossible de récupérer la position')),
+                                    );
+                                  }
 
                                   final planteEditee = widget.plante.copyWith(
                                     name: nameController.text,
@@ -225,44 +232,6 @@ class _FormulaireEditState extends State<FormulaireEdit> {
     setState(() {
       galleryFile = savedImage;
     });
-  }
-
-
-  Future<Position?> _getCurrentPosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Le GPS est désactivé')),
-      );
-      return null;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Permission GPS refusée')),
-        );
-        return null;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Permission GPS refusée définitivement'),
-        ),
-      );
-      return null;
-    }
-
-    return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
   }
 
 

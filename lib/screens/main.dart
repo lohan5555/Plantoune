@@ -5,7 +5,7 @@ import 'package:plantoune/services/planteService.dart';
 import '../services/db.dart';
 import 'herbier.dart';
 import 'carte.dart';
-import 'FormulaireAjout.dart';
+import 'formulaireAjout.dart';
 
 //point d'entrée de l'app
 void main() async {
