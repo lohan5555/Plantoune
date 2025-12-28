@@ -24,6 +24,8 @@ git clone https://github.com/lohan5555/Plantoune
 
 - Visualiser sur une carte toutes les entrées de l’herbier 
 
+- Recentrer la map sur le coordonnées de l'appareil
+
 
 ## Technologie utilisées :
 
