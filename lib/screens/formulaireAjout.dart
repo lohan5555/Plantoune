@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/services/imageService.dart';
 import 'package:plantoune/services/positionService.dart';
 
 
@@ -20,8 +19,7 @@ class FormulaireAjout extends StatefulWidget {
 class _FormulaireAjoutState extends State<FormulaireAjout> {
   //pour récupérer et stocker l'image
   File? galleryFile;
-  final picker = ImagePicker();
-
+  final ImageService imageService = ImageService();
 
   //pour le formulaire
   final _formKey = GlobalKey<FormState>();
@@ -164,17 +162,6 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
     );
   }
 
-  //permet de sauvegarder une image dans l'appareil
-  Future<File> _saveImagePermanently(XFile image) async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    final fileName = p.basename(image.path);
-    final savedImage = File('${directory.path}/$fileName');
-
-    return File(image.path).copy(savedImage.path);
-  }
-
-
   void _showPicker({
     required BuildContext context,
   }) {
@@ -187,17 +174,23 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
               ListTile(
                 leading: const Icon(Icons.photo_library),
                 title: const Text('Photo Library'),
-                onTap: () {
-                  getImage(ImageSource.gallery);
-                  Navigator.of(context).pop();
+                onTap: () async {
+                  Navigator.pop(context);
+                  final image = await imageService.pickAndSaveImage(ImageSource.gallery);
+                  if (image != null) {
+                    setState(() => galleryFile = image);
+                  }
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
                 title: const Text('Camera'),
-                onTap: () {
-                  getImage(ImageSource.camera);
-                  Navigator.of(context).pop();
+                onTap: () async {
+                  Navigator.pop(context);
+                  final image = await imageService.pickAndSaveImage(ImageSource.camera);
+                  if (image != null) {
+                    setState(() => galleryFile = image);
+                  }
                 },
               ),
             ],
@@ -206,26 +199,4 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
       },
     );
   }
-
-  //sauvegarde une copie de l'image, car le path de l'image orginal est temporaire
-  Future<void> getImage(ImageSource img) async {
-    final pickedFile = await picker.pickImage(source: img);
-
-    if (pickedFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nothing selected')),
-      );
-      return;
-    }
-
-    final savedImage = await _saveImagePermanently(pickedFile);
-
-    setState(() {
-      galleryFile = savedImage;
-    });
-  }
-
-
-
-
 }
