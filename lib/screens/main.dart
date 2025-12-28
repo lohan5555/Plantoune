@@ -135,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ]
       ),
       floatingActionButton: FloatingActionButton(
+        elevation: 1,
         onPressed: (){
           Navigator.push(
             context,
