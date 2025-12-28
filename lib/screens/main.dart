@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:plantoune/models/plante.dart';
 import 'package:plantoune/services/planteService.dart';
+import 'package:plantoune/services/positionService.dart';
 import '../services/db.dart';
 import 'herbier.dart';
 import 'carte.dart';
@@ -53,6 +54,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final PlanteService planteService = PlanteService(); //instance du service
+  final PositionService positionService = PositionService();
   List<Plante> _plantes = [];
   int currentPageIndex = 0;
 
@@ -111,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: currentPageIndex,
         children: [
           HerbierPage(plantes: _plantes, onDelete: _deletePlante, onEdit: _editPlante,),
-          CartePage(plantes: _plantes),
+          CartePage(plantes: _plantes, positionService: positionService),
         ],
       ),
       bottomNavigationBar: NavigationBar(

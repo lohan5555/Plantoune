@@ -3,15 +3,49 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../models/plante.dart';
+import '../services/positionService.dart';
 import 'detailPlante.dart';
 
-class CartePage extends StatelessWidget {
-  const CartePage({super.key, required this.plantes});
+class CartePage extends StatefulWidget {
+  const CartePage({
+    super.key,
+    required this.plantes,
+    required this.positionService
+  });
 
   final List<Plante> plantes;
+  final PositionService positionService;
+
+  @override
+  State<CartePage> createState() => _CartePageState();
+}
+
+class _CartePageState extends State<CartePage>{
+  final MapController _mapController = MapController();
+  LatLng currentLocalisation = LatLng(45.066669, 5.93333);
+
+  @override
+  void initState() {
+    super.initState();
+    _setCurrentCoordonnees();
+  }
+
+  void _setCurrentCoordonnees() async{
+    Position? p = await widget.positionService.getCurrentPosition();
+    if(p != null){
+      final userLatLng = LatLng(p.latitude, p.longitude);
+      setState(() {
+        currentLocalisation = userLatLng;
+      });
+      _mapController.move(userLatLng, 15);
+    }
+  }
+
+
 
   //créer une liste de marker à partir de la liste des plantes
   List<Marker> listMarker(List<Plante> plantes, BuildContext context){
@@ -47,8 +81,9 @@ class CartePage extends StatelessWidget {
       body: Stack(
         children: [
           FlutterMap(
-            options: const MapOptions(
-              initialCenter: LatLng(45.566669, 5.93333),
+            mapController: _mapController,
+            options: MapOptions(
+              initialCenter: currentLocalisation,
               initialZoom: 10,
               maxZoom: 18,
             ),
@@ -63,12 +98,17 @@ class CartePage extends StatelessWidget {
                 ],
               ),
               MarkerLayer(
-                markers: listMarker(plantes, context),
+                markers: listMarker(widget.plantes, context),
               ),
             ],
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _mapController.move(currentLocalisation, 15),
+        child: const Icon(Icons.my_location),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 
