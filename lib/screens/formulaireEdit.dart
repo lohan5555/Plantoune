@@ -9,7 +9,6 @@ import 'package:geolocator/geolocator.dart';
 
 
 class FormulaireEdit extends StatefulWidget {
-  //final Function(Plante) onEdit;
   final Plante plante;
 
   const FormulaireEdit({super.key, required this.plante});
@@ -115,7 +114,7 @@ class _FormulaireEditState extends State<FormulaireEdit> {
                                     longitude: position?.longitude,
                                   );
 
-                                  //on retourne sur le composant fleurCard, qui attent un objet de type fleur
+                                  //on retourne sur le composant fleurCard, qui attend un objet de type fleur
                                   //donc on renvoie notre planteEditee
                                   Navigator.pop(context, planteEditee);
 

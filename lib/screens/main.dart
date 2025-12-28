@@ -7,6 +7,7 @@ import 'herbier.dart';
 import 'carte.dart';
 import 'FormulaireAjout.dart';
 
+//point d'entrée de l'app
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -70,15 +71,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  //fonction qui va ajouter une plante en base et mettre à jour le state
+  Future<void> _createPlante(Plante plante) async{
+    await planteService.insertPlante(plante);
+    await _loadPlantes();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Plante créé')),
+    );
+  }
 
+  //fonction qui va supprimer une plante de la base et mettre à jour le state
   Future<void> _deletePlante(int id) async {
     await planteService.deletePlante(id);
     await _loadPlantes();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Plante supprimé')),
+      const SnackBar(content: Text('Plante supprimée')),
     );
   }
 
+  //fonction qui va modifier une plante de la base et mettre à jour le state
   Future<void> _editPlante(Plante plante) async {
     await planteService.updatePlante(plante);
     await _loadPlantes();
@@ -126,12 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => FormulaireAjout(
-                onCreate: (plante) async {
-                  await planteService.insertPlante(plante);
-                  await _loadPlantes();
-                },
-              ),
+              builder: (_) => FormulaireAjout(onCreate: _createPlante),
             ),
           );
         },

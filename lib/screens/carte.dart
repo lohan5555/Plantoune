@@ -59,7 +59,7 @@ class CartePage extends StatelessWidget {
               ),
               RichAttributionWidget(
                 attributions: [
-                  TextSourceAttribution('© OpenStreetMap contributors'),
+                  TextSourceAttribution('OpenStreetMap contributors'),
                 ],
               ),
               MarkerLayer(

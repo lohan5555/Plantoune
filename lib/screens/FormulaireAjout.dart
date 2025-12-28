@@ -18,16 +18,21 @@ class FormulaireAjout extends StatefulWidget {
 }
 
 class _FormulaireAjoutState extends State<FormulaireAjout> {
+  //pour récupérer et stocker l'image
   File? galleryFile;
   final picker = ImagePicker();
 
 
+  //pour le formulaire
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final textController = TextEditingController();
 
+  //pour le feedback CircularProgressIndicator
   var loadingCoordonnees = false;
 
+  // permet de libérer la mémoire allouée aux variables lorsque le state est
+  // supprimé, pour éviter des fuites de mémoires
   @override
   void dispose() {
     nameController.dispose();
@@ -39,7 +44,7 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true, //redimentionne le body pour éviter que des widgets soit caché par le clavier virtuel
       appBar: AppBar(
         title: const Text('Ajouter une nouvelle plante !'),
         backgroundColor: Color(0xffd5f2c9),
