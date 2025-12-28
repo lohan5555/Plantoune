@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plantoune/models/plante.dart';
-import 'package:plantoune/services/positionService.dart';
 import 'package:plantoune/services/imageService.dart';
 
 
@@ -24,10 +23,8 @@ class _FormulaireEditState extends State<FormulaireEdit> {
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final textController = TextEditingController();
-
-  var loadingCoordonnees = false;
-
-  final PositionService positionService = PositionService();
+  final longitudeController = TextEditingController();
+  final latitudeController = TextEditingController();
 
   @override
   void dispose() {
@@ -46,6 +43,9 @@ class _FormulaireEditState extends State<FormulaireEdit> {
     if (widget.plante.imagePath != null) {
       galleryFile = File(widget.plante.imagePath!);
     }
+
+    latitudeController.text = widget.plante.latitude.toString();
+    longitudeController.text = widget.plante.longitude.toString();
   }
 
 
@@ -53,7 +53,7 @@ class _FormulaireEditState extends State<FormulaireEdit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Modifier une plante'),
         backgroundColor: Color(0xffd5f2c9),
@@ -86,29 +86,46 @@ class _FormulaireEditState extends State<FormulaireEdit> {
                               },
                             ),
                             SizedBox(height: 20),
+
                             Text("Description :"),
                             TextFormField(
                               controller: textController,
                               validator: (value) {return null;},
                             ),
+                            SizedBox(height: 20),
+
+                            Text("Latitude : "),
+                            TextFormField(
+                              controller: latitudeController,
+                              validator: (value){
+                                if(value == null || value.isEmpty){return 'Veuillez entrer une valeur';}
+                                if(double.tryParse(value) == null){
+                                  return 'Veillez entrer des coordonnées valide';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+
+
+                            Text("Longitude : "),
+                            TextFormField(
+                              controller: longitudeController,
+                              validator: (value){
+                                if(value == null || value.isEmpty){return 'Veuillez entrer une valeur';}
+                                if(double.tryParse(value) == null){
+                                  return 'Veillez entrer des coordonnées valide';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               child: ElevatedButton(
-                                onPressed: loadingCoordonnees
-                                    ? null
-                                    : () async {
+                                onPressed: () async {
                                   if (!_formKey.currentState!.validate()) return;
-
-                                  setState(() {
-                                    loadingCoordonnees = true;
-                                  });
-
-                                  final position = await positionService.getCurrentPosition();
-                                  if (position == null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Impossible de récupérer la position')),
-                                    );
-                                  }
 
                                   final planteEditee = widget.plante.copyWith(
                                     name: nameController.text,
@@ -116,28 +133,15 @@ class _FormulaireEditState extends State<FormulaireEdit> {
                                         ? null
                                         : textController.text.trim(),
                                     imagePath: galleryFile?.path,
-                                    latitude: position?.latitude,
-                                    longitude: position?.longitude,
+                                    latitude: double.parse(latitudeController.text),
+                                    longitude: double.parse(longitudeController.text),
                                   );
 
                                   //on retourne sur le composant fleurCard, qui attend un objet de type fleur
                                   //donc on renvoie notre planteEditee
                                   Navigator.pop(context, planteEditee);
-
-                                  setState(() {
-                                    loadingCoordonnees = false;
-                                  });
                                 },
-                                child: loadingCoordonnees
-                                    ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
-                                  ),
-                                )
-                                    : const Text('Modifier'),
+                                child: const Text('Modifier'),
                               ),
                             ),
                           ],
