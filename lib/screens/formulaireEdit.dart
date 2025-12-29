@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/screens/carteEdit.dart';
 import 'package:plantoune/services/imageService.dart';
 
 
@@ -120,6 +122,30 @@ class _FormulaireEditState extends State<FormulaireEdit> {
                               },
                             ),
                             SizedBox(height: 20),
+
+                            ElevatedButton(
+                              onPressed: () async{
+                                final LatLng? position = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => CarteEditPage(
+                                      initialPosition: LatLng(
+                                        double.parse(latitudeController.text),
+                                        double.parse(longitudeController.text),
+                                      ),
+                                      plante: widget.plante,
+                                    ),
+                                  ),
+                                );
+                                if (position != null) {
+                                  setState(() {
+                                    latitudeController.text = position.latitude.toString();
+                                    longitudeController.text = position.longitude.toString();
+                                  });
+                                }
+                              },
+                              child: const Icon(Icons.my_location)
+                            ),
 
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),
