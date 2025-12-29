@@ -8,7 +8,12 @@ class ImageService {
   final ImagePicker _picker = ImagePicker();
 
   Future<File?> pickAndSaveImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
+    final pickedFile = await _picker.pickImage(
+      source: source,
+      maxHeight: 1024,
+      maxWidth: 1024,
+      imageQuality: 85
+    );
     if (pickedFile == null) return null;
 
     final directory = await getApplicationDocumentsDirectory();
