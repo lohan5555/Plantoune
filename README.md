@@ -1,9 +1,14 @@
 # Plantoune
 
 Plantoune est une application mobile Flutter Android permettant de réaliser un herbier numérique à partir de photos de plantes. Chaque entrée dans l’herbier est associée à des coordonnées géographiques, qu’il est possible de visualiser sur une carte.
+
 L'objectif en développant cette application était de m'exercer et me re-familiariser avec l'environnement Flutter, que je n'avais pas pratiqué depuis un moment.
 
 ## Installation : 
+
+Téléchargez l'apk et installé le sur votre téléphone : https://drive.google.com/file/d/1GsQ8INr0HBnsGD7OBBXB6u3l-Jvv55C8/view?usp=drive_link
+
+Ou récupérer le dépôt pour compiler vous même :
 
 - Clonez le dépôt :
 ```
@@ -18,13 +23,15 @@ git clone https://github.com/lohan5555/Plantoune
 
 - Créer une entrée dans l’herbier : prendre une photo (avec l'appareil photo ou depuis la galerie), renseigner des informations (un nom et une description) et y associer les coordonnées de l’appareil 
 
-- Afficher toutes les plantes renseignées
-
-- Modifier ou supprimer les plantes de l'herbier
+- Afficher la liste de toutes les plantes renseignées
 
 - Visualiser sur une carte toutes les entrées de l’herbier 
 
-- Recentrer la map sur le coordonnées de l'appareil
+- Modifier ou supprimer les informations des plantes de l'herbier
+
+- Modifier les coordonnées associées au plantes de l'herbier
+
+- Recentrer la carte sur le coordonnées de l'appareil
 
 ## Images :
 
@@ -64,8 +71,8 @@ Formultaire de modification:
 
 ## Potentiels améliorations :
 
-- choisir les coordonnées au moment de la création de la plante
 - Ajouter plusieurs photos à une seule plante
 - Ajouter des filtres et une barre de recherche dans l'herbier
+- Choisir les coordonnées au moment de la création de la plante (plutôt que les coordonnées de l'appareil)
 
 
