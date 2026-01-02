@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:plantoune/models/plante.dart';
 import 'package:plantoune/services/planteService.dart';
 import 'package:plantoune/services/positionService.dart';
-import '../services/db.dart';
-import 'herbier.dart';
-import 'carte.dart';
-import 'formulaireAjout.dart';
+import 'services/db.dart';
+import 'screens/herbier.dart';
+import 'screens/carte.dart';
+import 'screens/formulaireAjout.dart';
 
 //point d'entrée de l'app
 void main() async {
