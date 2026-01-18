@@ -6,8 +6,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/mapPref.dart';
-import '../models/plante.dart';
-import '../models/planteMarker.dart';
+import '../data/models/plante.dart';
+import '../data/models/planteMarker.dart';
 import '../services/positionService.dart';
 import 'detailPlante.dart';
 

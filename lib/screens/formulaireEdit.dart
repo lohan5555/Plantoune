@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/data/models/plante.dart';
 import 'package:plantoune/screens/carteEdit.dart';
 import 'package:plantoune/services/imageService.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/data/models/plante.dart';
 import 'package:plantoune/services/planteService.dart';
 import 'package:plantoune/services/positionService.dart';
-import 'services/db.dart';
+import 'data/db.dart';
 import 'screens/herbier.dart';
 import 'screens/carte.dart';
 import 'screens/formulaireAjout.dart';

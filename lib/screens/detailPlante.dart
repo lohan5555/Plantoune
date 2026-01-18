@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/data/models/plante.dart';
 
 class DetailPlante extends StatelessWidget {
   const DetailPlante({super.key, required this.plante});

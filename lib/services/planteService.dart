@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:plantoune/models/plante.dart';
-import 'package:plantoune/services/db.dart';
+import 'package:plantoune/data/models/plante.dart';
+import 'package:plantoune/data/db.dart';
 
 class PlanteService{
 
