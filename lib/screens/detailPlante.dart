@@ -2,8 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:plantoune/data/models/plante.dart';
 
+import 'formulaireEdit.dart';
+
 class DetailPlante extends StatelessWidget {
-  const DetailPlante({super.key, required this.plante});
+  final void Function(Plante) onEdit;
+  const DetailPlante({super.key, required this.plante, required this.onEdit});
 
   final Plante plante;
 
@@ -16,6 +19,23 @@ class DetailPlante extends StatelessWidget {
         title: Text(plante.name),
         backgroundColor: const Color(0xffd5f2c9),
         foregroundColor: Colors.black,
+        actions: [
+          IconButton(
+              onPressed: () async {
+                final planteModifiee = await Navigator.push<Plante>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => FormulaireEdit(plante: plante),
+                  ),
+                );
+
+                if (planteModifiee != null) {
+                  onEdit(planteModifiee);
+                }
+              },
+            icon: Icon(Icons.edit)
+          )
+        ],
       ),
       body: SafeArea(
         child: Column(

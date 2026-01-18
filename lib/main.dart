@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: currentPageIndex,
         children: [
           HerbierPage(plantes: _plantes, onDelete: _deletePlante, onEdit: _editPlante,),
-          CartePage(plantes: _plantes, positionService: positionService),
+          CartePage(plantes: _plantes, positionService: positionService, onEdit: _editPlante),
         ],
       ),
       bottomNavigationBar: NavigationBar(

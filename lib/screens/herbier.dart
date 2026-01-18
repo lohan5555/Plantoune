@@ -57,7 +57,7 @@ class FleureCard extends StatelessWidget{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => DetailPlante(plante: plante),
+              builder: (_) => DetailPlante(plante: plante, onEdit: onEdit),
             ),
           );
         },

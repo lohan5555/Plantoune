@@ -12,10 +12,12 @@ import '../services/positionService.dart';
 import 'detailPlante.dart';
 
 class CartePage extends StatefulWidget {
+  final void Function(Plante) onEdit;
   const CartePage({
     super.key,
     required this.plantes,
-    required this.positionService
+    required this.positionService,
+    required this.onEdit
   });
 
   final List<Plante> plantes;
@@ -79,7 +81,7 @@ class _CartePageState extends State<CartePage>{
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => DetailPlante(plante: plante),
+                  builder: (_) => DetailPlante(plante: plante, onEdit: widget.onEdit),
                 ),
               );
             },
