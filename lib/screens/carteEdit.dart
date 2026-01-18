@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../data/mapPref.dart';
 import '../models/plante.dart';
 import '../models/planteMarker.dart';
 import '../services/positionService.dart';
@@ -24,8 +26,34 @@ class CarteEditPage extends StatefulWidget {
 class _CarteEditPageState extends State<CarteEditPage>{
   final PositionService positionService = PositionService();
   final MapController _mapController = MapController();
+  double currentZoom = 10;
 
   LatLng? newLocalisation;
+
+  @override
+  void initState() {
+    super.initState();
+    _setCurrentZoom();
+  }
+
+
+  void _setCurrentZoom() async{
+    final prefs = await SharedPreferences.getInstance();
+
+    if (prefs.containsKey(MapPref.zoom)) {
+      final val = prefs.getDouble(MapPref.zoom);
+      if (val != null) {
+        setState(() {
+            currentZoom = val;
+        });
+      }
+      _mapController.move(widget.initialPosition, currentZoom);
+    }
+  }
+
+  void _updateZoom() {
+    MapPref.saveZoomValue(currentZoom);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +72,19 @@ class _CarteEditPageState extends State<CarteEditPage>{
             mapController: _mapController,
             options: MapOptions(
               initialCenter: widget.initialPosition,
-              initialZoom: 15,
+              initialZoom: currentZoom,
               maxZoom: 18,
               onTap: (tapPosition, latLng){
                 setState(() {
                   newLocalisation = latLng;
                 });
-              }
+              },
+              onPositionChanged: (position, hasGesture){
+                setState(() {
+                  currentZoom = position.zoom;
+                });
+                _updateZoom();
+              },
             ),
             children: [
               TileLayer(
@@ -81,7 +115,7 @@ class _CarteEditPageState extends State<CarteEditPage>{
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _mapController.move(widget.initialPosition,15),
+        onPressed: () => _mapController.move(widget.initialPosition,currentZoom),
         child: const Icon(Icons.my_location),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,

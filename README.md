@@ -33,6 +33,8 @@ git clone https://github.com/lohan5555/Plantoune
 
 - Recentrer la carte sur le coordonnées de l'appareil
 
+- Le niveau de zoom sur la carte est mémorisé grâce au shared_preferences
+
 ## Images :
 
 Page d'acceuil:
@@ -67,6 +69,7 @@ Formultaire de modification:
 - Sqflite pour la persistance des données (https://pub.dev/packages/sqflite)
 - Image_picker pour prendre/récupérer les photos (https://pub.dev/packages/image_picker)
 - Geolocator pour les coordonnées géographiques (https://pub.dev/packages/geolocator)
+- Shared_preferences pour stockées les préférences utilisateurs (https://pub.dev/packages/shared_preferences)
 
 
 ## Potentiels améliorations :
