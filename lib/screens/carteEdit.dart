@@ -98,8 +98,17 @@ class _CarteEditPageState extends State<CarteEditPage>{
               ),
               MarkerLayer(
                 markers: newLocalisation == null
-                    ? []
-                    : [
+                  ? [
+                      Marker(
+                        point: widget.initialPosition,
+                        width: 100,
+                        height: 100,
+                        child: planteMarker(
+                          imagePath: widget.plante.imagePath ?? 'assets/default.png',
+                        ),
+                      ),
+                    ]
+                  : [
                   Marker(
                     point: newLocalisation!,
                     width: 100,
