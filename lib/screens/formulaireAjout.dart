@@ -1,10 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:plantoune/data/models/plante.dart';
 import 'package:plantoune/services/imageService.dart';
 import 'package:plantoune/services/positionService.dart';
+
+import 'carteAjout.dart';
 
 
 class FormulaireAjout extends StatefulWidget {
@@ -30,6 +34,7 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
   var loadingCoordonnees = false;
 
   final PositionService positionService = PositionService();
+  LatLng? coordonnesChoisie;
 
   // permet de libérer la mémoire allouée aux variables lorsque le state est
   // supprimé, pour éviter des fuites de mémoires
@@ -82,23 +87,63 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
                               controller: textController,
                               validator: (value) {return null;},
                             ),
+
+                            SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () async{
+                                final Position? currentPosition = await positionService.getCurrentPosition();
+                                if (currentPosition == null) return;
+
+                                final LatLng? position = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => CarteAjoutPage(
+                                      initialPosition: LatLng(
+                                        currentPosition.latitude,
+                                        currentPosition.longitude,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                                if (position != null) {
+                                  setState(() {
+                                    coordonnesChoisie = position;
+                                  });
+                                }
+                              },
+                              child: const Icon(Icons.my_location)
+                            ),
+
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               child: ElevatedButton(
                                 onPressed: loadingCoordonnees
                                   ? null
                                   : () async {
-                                  if (!_formKey.currentState!.validate()) return;
-
                                   setState(() {
                                     loadingCoordonnees = true;
                                   });
+                                  if (!_formKey.currentState!.validate()) return;
 
-                                  final position = await positionService.getCurrentPosition();
+                                  LatLng? position;
+
+                                  if (coordonnesChoisie != null) {
+                                    position = coordonnesChoisie;
+                                  } else {
+                                    final Position? current = await positionService.getCurrentPosition();
+                                    if (current != null) {
+                                      position = LatLng(current.latitude, current.longitude);
+                                    }
+                                  }
+
                                   if (position == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(content: Text('Impossible de récupérer la position')),
                                     );
+                                    setState(() {
+                                      loadingCoordonnees = false;
+                                    });
+                                    return;
                                   }
 
                                   final plante = Plante(
@@ -107,8 +152,8 @@ class _FormulaireAjoutState extends State<FormulaireAjout> {
                                         ? null
                                         : textController.text.trim(), //pour mettre 'NULL' au lieu d'une chaine vide
                                     imagePath: galleryFile?.path,
-                                    latitude: position?.latitude,
-                                    longitude: position?.longitude,
+                                    latitude: position.latitude,
+                                    longitude: position.longitude,
                                   );
 
                                   widget.onCreate(plante);
