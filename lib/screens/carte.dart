@@ -3,17 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/plante.dart';
-import '../models/planteMarker.dart';
+import '../data/mapPref.dart';
+import '../data/models/plante.dart';
+import '../data/models/planteMarker.dart';
 import '../services/positionService.dart';
 import 'detailPlante.dart';
 
 class CartePage extends StatefulWidget {
+  final void Function(Plante) onEdit;
   const CartePage({
     super.key,
     required this.plantes,
-    required this.positionService
+    required this.positionService,
+    required this.onEdit
   });
 
   final List<Plante> plantes;
@@ -26,25 +30,42 @@ class CartePage extends StatefulWidget {
 class _CartePageState extends State<CartePage>{
   final MapController _mapController = MapController();
   LatLng currentLocalisation = LatLng(45.066669, 5.93333);
+  double currentZoom = 10;
 
   @override
   void initState() {
     super.initState();
-    _setCurrentCoordonnees();
+    _setCurrentCoordonneesAndZoom();
   }
 
-  void _setCurrentCoordonnees() async{
+  void _setCurrentCoordonneesAndZoom() async{
+    final prefs = await SharedPreferences.getInstance();
     Position? p = await widget.positionService.getCurrentPosition();
+
+    // Zoom
+    if (prefs.containsKey(MapPref.zoom)) {
+      final val = prefs.getDouble(MapPref.zoom);
+      if (val != null) {
+        setState(() {
+            currentZoom = val;
+        });
+      }
+    }
+
+    // Coordonnées
     if(p != null){
       final userLatLng = LatLng(p.latitude, p.longitude);
       setState(() {
         currentLocalisation = userLatLng;
       });
-      _mapController.move(userLatLng, 15);
+      _mapController.move(userLatLng, currentZoom);
     }
   }
 
 
+  void _updateZoom() {
+    MapPref.saveZoomValue(currentZoom);
+  }
 
   //créer une liste de marker à partir de la liste des plantes
   List<Marker> listMarker(List<Plante> plantes, BuildContext context){
@@ -60,7 +81,7 @@ class _CartePageState extends State<CartePage>{
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => DetailPlante(plante: plante),
+                  builder: (_) => DetailPlante(plante: plante, onEdit: widget.onEdit),
                 ),
               );
             },
@@ -83,8 +104,14 @@ class _CartePageState extends State<CartePage>{
             mapController: _mapController,
             options: MapOptions(
               initialCenter: currentLocalisation,
-              initialZoom: 10,
+              initialZoom: currentZoom,
               maxZoom: 18,
+              onPositionChanged: (position, hasGesture){
+                setState(() {
+                  currentZoom = position.zoom;
+                });
+                _updateZoom();
+              },
             ),
             children: [
               TileLayer(
@@ -104,7 +131,7 @@ class _CartePageState extends State<CartePage>{
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _mapController.move(currentLocalisation, 15),
+        onPressed: () => _mapController.move(currentLocalisation, currentZoom),
         child: const Icon(Icons.my_location),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,

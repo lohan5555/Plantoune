@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/data/models/plante.dart';
 import 'package:plantoune/screens/detailPlante.dart';
 import 'package:plantoune/screens/formulaireEdit.dart';
 
@@ -57,7 +57,7 @@ class FleureCard extends StatelessWidget{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => DetailPlante(plante: plante),
+              builder: (_) => DetailPlante(plante: plante, onEdit: onEdit),
             ),
           );
         },

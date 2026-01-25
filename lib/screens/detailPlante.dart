@@ -1,11 +1,29 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/data/models/plante.dart';
 
-class DetailPlante extends StatelessWidget {
-  const DetailPlante({super.key, required this.plante});
+import 'formulaireEdit.dart';
 
+class DetailPlante extends StatefulWidget {
+
+  final void Function(Plante) onEdit;
   final Plante plante;
+
+  const DetailPlante({super.key, required this.plante, required this.onEdit});
+
+  @override
+  State<DetailPlante> createState() => _DetailPlanteState();
+}
+
+class _DetailPlanteState extends State<DetailPlante>{
+
+  late Plante _plante;
+
+  @override
+  void initState() {
+    super.initState();
+    _plante = widget.plante;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +31,29 @@ class DetailPlante extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(plante.name),
+        title: Text(_plante.name),
         backgroundColor: const Color(0xffd5f2c9),
         foregroundColor: Colors.black,
+        actions: [
+          IconButton(
+              onPressed: () async {
+                final planteModifiee = await Navigator.push<Plante>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => FormulaireEdit(plante: _plante),
+                  ),
+                );
+
+                if (planteModifiee != null) {
+                  widget.onEdit(planteModifiee);
+                  setState(() {
+                    _plante = planteModifiee;
+                  });
+                }
+              },
+            icon: Icon(Icons.edit)
+          )
+        ],
       ),
       body: SafeArea(
         child: Column(
@@ -25,9 +63,9 @@ class DetailPlante extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    plante.imagePath == null
+                    _plante.imagePath == null
                         ? Image.asset('assets/default.png', fit: BoxFit.cover)
-                        : Image.file(File(plante.imagePath!), fit: BoxFit.cover),
+                        : Image.file(File(_plante.imagePath!), fit: BoxFit.cover),
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -36,8 +74,8 @@ class DetailPlante extends StatelessWidget {
                             const Icon(Icons.location_on, size: 20, color: Colors.green,),
                             const SizedBox(width: 6),
                             Text(
-                              plante.latitude != null && plante.longitude != null
-                                  ? '${plante.latitude}, ${plante.longitude}'
+                              _plante.latitude != null && _plante.longitude != null
+                                  ? '${_plante.latitude}, ${_plante.longitude}'
                                   : 'Localisation inconnue',
                               style: theme.textTheme.bodySmall,
                             ),
@@ -61,14 +99,14 @@ class DetailPlante extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
-                              (plante.text == null)
+                              (_plante.text == null)
                                   ? 'Aucune description'
-                                  : plante.text!,
+                                  : _plante.text!,
                               style: theme.textTheme.bodyMedium?.copyWith(
-                                color: (plante.text == null)
+                                color: (_plante.text == null)
                                     ? Colors.grey
                                     : Colors.black,
-                                fontStyle: (plante.text == null)
+                                fontStyle: (_plante.text == null)
                                     ? FontStyle.italic
                                     : FontStyle.normal,
                               ),

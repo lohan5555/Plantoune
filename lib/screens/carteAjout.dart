@@ -5,25 +5,22 @@ import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/mapPref.dart';
-import '../data/models/plante.dart';
 import '../data/models/planteMarker.dart';
 import '../services/positionService.dart';
 
-class CarteEditPage extends StatefulWidget {
-  const CarteEditPage({
+class CarteAjoutPage extends StatefulWidget {
+  const CarteAjoutPage({
     super.key,
     required this.initialPosition,
-    required this.plante
   });
 
   final LatLng initialPosition;
-  final Plante plante;
 
   @override
-  State<CarteEditPage> createState() => _CarteEditPageState();
+  State<CarteAjoutPage> createState() => _CarteAjoutPageState();
 }
 
-class _CarteEditPageState extends State<CarteEditPage>{
+class _CarteAjoutPageState extends State<CarteAjoutPage>{
   final PositionService positionService = PositionService();
   final MapController _mapController = MapController();
   double currentZoom = 10;
@@ -44,7 +41,7 @@ class _CarteEditPageState extends State<CarteEditPage>{
       final val = prefs.getDouble(MapPref.zoom);
       if (val != null) {
         setState(() {
-            currentZoom = val;
+          currentZoom = val;
         });
       }
       _mapController.move(widget.initialPosition, currentZoom);
@@ -61,8 +58,8 @@ class _CarteEditPageState extends State<CarteEditPage>{
       appBar: AppBar(
         actions: [
           IconButton(
-          onPressed: () {Navigator.pop(context, newLocalisation);},
-          icon: Icon(Icons.check)
+              onPressed: () {Navigator.pop(context, newLocalisation);},
+              icon: Icon(Icons.check)
           ),
         ],
       ),
@@ -98,23 +95,23 @@ class _CarteEditPageState extends State<CarteEditPage>{
               ),
               MarkerLayer(
                 markers: newLocalisation == null
-                  ? [
-                      Marker(
-                        point: widget.initialPosition,
-                        width: 100,
-                        height: 100,
-                        child: planteMarker(
-                          imagePath: widget.plante.imagePath ?? 'assets/default.png',
-                        ),
-                      ),
-                    ]
-                  : [
+                    ? [
+                  Marker(
+                    point: widget.initialPosition,
+                    width: 100,
+                    height: 100,
+                    child: planteMarker(
+                      imagePath: 'assets/default.png',
+                    ),
+                  ),
+                ]
+                    : [
                   Marker(
                     point: newLocalisation!,
                     width: 100,
                     height: 100,
                     child: planteMarker(
-                      imagePath: widget.plante.imagePath ?? 'assets/default.png',
+                      imagePath: 'assets/default.png',
                     ),
                   ),
                 ],

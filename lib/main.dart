@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:plantoune/models/plante.dart';
+import 'package:plantoune/data/models/plante.dart';
 import 'package:plantoune/services/planteService.dart';
 import 'package:plantoune/services/positionService.dart';
-import 'services/db.dart';
+import 'data/db.dart';
 import 'screens/herbier.dart';
 import 'screens/carte.dart';
 import 'screens/formulaireAjout.dart';
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: currentPageIndex,
         children: [
           HerbierPage(plantes: _plantes, onDelete: _deletePlante, onEdit: _editPlante,),
-          CartePage(plantes: _plantes, positionService: positionService),
+          CartePage(plantes: _plantes, positionService: positionService, onEdit: _editPlante),
         ],
       ),
       bottomNavigationBar: NavigationBar(
