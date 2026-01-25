@@ -6,7 +6,7 @@ L'objectif en développant cette application était de m'exercer et me re-famili
 
 ## Installation : 
 
-Téléchargez l'apk et installé le sur votre téléphone : https://drive.google.com/file/d/1GsQ8INr0HBnsGD7OBBXB6u3l-Jvv55C8/view?usp=drive_link
+Téléchargez l'apk et installé le sur votre téléphone : https://drive.google.com/file/d/1isL08QmkVfmKzmZZAT1aVyc_04YWtEJk/view?usp=sharing
 
 Ou récupérer le dépôt pour compiler vous même :
 
