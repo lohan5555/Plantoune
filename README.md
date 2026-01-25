@@ -14,7 +14,7 @@ Ou récupérer le dépôt pour compiler vous même :
 ```
 git clone https://github.com/lohan5555/Plantoune
 ```
-- Ouvrez le projet dans Android Studio
+- Ouvrez le projet dans Android Studio (assurez vous d'avoir le pluging flutter d'installer)
 
 - Compilez et lancez sur un émulateur ou un appareil Android
 
