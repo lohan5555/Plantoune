@@ -76,6 +76,5 @@ Formultaire de modification:
 
 - Ajouter plusieurs photos à une seule plante
 - Ajouter des filtres et une barre de recherche dans l'herbier
-- Choisir les coordonnées au moment de la création de la plante (plutôt que les coordonnées de l'appareil)
 
 
